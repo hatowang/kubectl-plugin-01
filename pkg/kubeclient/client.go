@@ -1,6 +1,7 @@
 package kubeclient
 
 import (
+	"context"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
@@ -27,7 +28,7 @@ func NewClient() (*Client, error) {
 }
 
 func (client *Client) ListNode() (*v1.NodeList, error) {
-	nodeList, err := client.Clientset.CoreV1().Nodes().List(metav1.ListOptions{})
+	nodeList, err := client.Clientset.CoreV1().Nodes().List(context.Background(), metav1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +36,7 @@ func (client *Client) ListNode() (*v1.NodeList, error) {
 }
 
 func (client *Client) ListPod() (*v1.PodList, error) {
-	podList, err := client.Clientset.CoreV1().Pods("").List(metav1.ListOptions{})
+	podList, err := client.Clientset.CoreV1().Pods("").List(context.Background(), metav1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
